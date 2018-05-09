@@ -1,0 +1,5 @@
+<launch>
+	<node name="molar_sensor_layer" pkg="sensor_layer" respawn="true" type="core.py"  output="screen"/>
+  <node name="molar_segment_layer" pkg="segment_layer" respawn="true" type="core.py"  output="screen"/>
+
+</launch>
