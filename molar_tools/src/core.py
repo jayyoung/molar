@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import roslib
 import rospy
 import sensor_msgs
@@ -8,6 +9,7 @@ import os
 import json
 import pickle
 import PyKDL
+from molar_tools.srv import *
 
 class MolarToolsServer():
     def __init__(self):
@@ -19,6 +21,7 @@ class MolarToolsServer():
 
 
         rospy.loginfo("* Tools server online")
+        rospy.spin()
 
     def convert_cloud_camera_to_map_cb(self,req):
         return ConvertCloudCameraToMapResponse(convert_cloud_camera_to_map(req.cloud,req.tf))

@@ -8,25 +8,46 @@ import tf
 import uuid
 import json
 from processing_layer.srv import *
+from filter_layer.srv import *
+from tracking_layer.srv import *
+from std_srvs.srv import Trigger, TriggerResponse
 
 class ProcessingLayer:
     def __init__(self):
         rospy.init_node('molar_processing_layer', anonymous = False)
         rospy.loginfo("* Processing Layer Starting Up")
         self.service = rospy.Service('/molar/process_scene', MolarProcessScene, self.process_scene_cb)
+        episode_start = rospy.Service('/molar_begin_episode',Trigger,self.begin_episode)
+        episode_end = rospy.Service('/molar/end_episode',Trigger,self.end_episode)
+
         rospy.loginfo("* Processing Layer Online")
         rospy.spin()
 
+    def begin_episode(self):
+        cur_episode_scenes = []
+        self.cur_episode_id = str(uuid.uuid4())
+        return TriggerResponse(True,"MOLAR: Beginning new episode with ID: "+self.cur_episode_id)
+
+
     def process_scene(self,scene):
+        rospy.loginfo("* Processing layer has received a scene")
+        #   input: a segmented scene
+        #   send to filter layer
+        rospy.loginfo("\t* Passing to filter layer")
+        filter_service = rospy.ServiceProxy("/molar/filter_scene",MolarFilterScene)
+        filter_response = filter_service(scene) # send a segmentresult to the filter, get a filtered result back
+        cur_episode_scenes.append(filter_response.output)
+        #   do more stuff?
 
-        #
-        #   send  to filter layer
 
-        #   send result to tracking Layer
-        #   do stuff
-        #
 
-        pass
+    def end_episode(self):
+        # cohere episode and store
+        rospy.loginfo("\t * Performing coherence on episode with ID " + self.cur_episode_id)
+        tracking_service = rospy.ServiceProxy("/molar/tracking",MolarEpisodeCoherence)
+        tracking_response = tracking_wrapper(cur_episode_scenes) # send a segmentresult to the filter, get a filtered result back
+        return TriggerResponse(True,"MOLAR: Episode with ID "+self.cur_episode_id+" finished.")
+
 
     def process_scene_cb(self,req):
         return MolarProcessSceneResponse(self.process_scene(req.input))
