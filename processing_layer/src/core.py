@@ -17,7 +17,7 @@ class ProcessingLayer:
         rospy.init_node('molar_processing_layer', anonymous = False)
         rospy.loginfo("* Processing Layer Starting Up")
         self.service = rospy.Service('/molar/process_scene', MolarProcessScene, self.process_scene_cb)
-        episode_start = rospy.Service('/molar_begin_episode',Trigger,self.begin_episode)
+        episode_start = rospy.Service('/molar/begin_episode',Trigger,self.begin_episode)
         episode_end = rospy.Service('/molar/end_episode',Trigger,self.end_episode)
 
         rospy.loginfo("* Processing Layer Online")
