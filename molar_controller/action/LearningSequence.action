@@ -1,0 +1,10 @@
+# goal
+geometry_msgs/Pose[] robot_base_poses
+geometry_msgs/Pose[] robot_ptu_poses
+---
+# result
+int32 end
+---
+# feedback
+int32 successful_views
+int32 objects_found
