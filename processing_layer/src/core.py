@@ -7,6 +7,7 @@ import geometry_msgs
 import tf
 import uuid
 import json
+from processing_layer.srv import *
 
 class ProcessingLayer:
     def __init__(self):
@@ -14,12 +15,13 @@ class ProcessingLayer:
         rospy.loginfo("* Processing Layer Starting Up")
         self.service = rospy.Service('/molar/process_scene', MolarProcessScene, self.process_scene_cb)
         rospy.loginfo("* Processing Layer Online")
+        rospy.spin()
 
     def process_scene(self,scene):
 
         #
         #   send  to filter layer
-        
+
         #   send result to tracking Layer
         #   do stuff
         #

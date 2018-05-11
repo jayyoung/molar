@@ -8,6 +8,7 @@ import tf
 import uuid
 from segment_layer.srv import *
 from segment_layer.msg import *
+from tracking_layer.srv import *
 
 class TrackingLayer:
     def __init__(self):
@@ -40,7 +41,7 @@ class GenericTrackingLayer(TrackingLayer):
 
 
 if __name__ == '__main__':
-    l = GenericSceneSegmentationLayer()
+    l = GenericTrackingLayer()
     #r = l.segment_cb("butts")
     #print(r)
     #l = SensorLayer()
