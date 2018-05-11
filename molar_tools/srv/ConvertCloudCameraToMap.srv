@@ -1,0 +1,4 @@
+sensor_msgs/PointCloud2 input     # the input point cloud in camera co-ordinates
+tf2_msgs/TFMessage tf
+---
+sensor_msgs/PointCloud2 output     # the input point cloud in map co-ordinates

@@ -6,6 +6,5 @@ sensor_msgs/Image depth
 sensor_msgs/CameraInfo camera_info
 geometry_msgs/Pose robot_pose
 tf2_msgs/TFMessage tf
-
 ---
 bool result   #something?

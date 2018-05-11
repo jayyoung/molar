@@ -19,16 +19,19 @@ class SceneSegmentationLayer:
         rospy.spin()
 
     def segment(self,req):
-        pass
+        rospy.logerr("** NO SEGMENTATION WRAPPER SPECIFIED **")
+        raise NotImplementedError
 
     def segment_cb(self,req):
         return self.segment(req)
 
 class GenericSceneSegmentationLayer(SceneSegmentationLayer):
     def segment(self,req):
-        rospy.loginfo("\t* Segmenting Scene with GENERIC")
+        rospy.loginfo("\t* Segmenting Scene with bog-standard PCL segmentation")
 
         output = MolarSegmentResult()
+        # populate this with the results of the seg
+
 
         rospy.loginfo("\t* Done!")
 
