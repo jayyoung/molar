@@ -19,7 +19,9 @@ class ProcessingLayer:
 
         #
         #   send  to filter layer
-        #   do stuff with the result
+        
+        #   send result to tracking Layer
+        #   do stuff
         #
 
         pass
