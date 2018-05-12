@@ -8,6 +8,7 @@ import tf
 import uuid
 import json
 from filter_layer.srv import *
+from filter_layer.msg import *
 
 class SceneFilterLayer:
     def __init__(self):
@@ -24,9 +25,9 @@ class SceneFilterLayer:
     def filter_cb(self,req):
         return self.filter(req)
 
-class GenericSceneFilterLayer(SceneFilterLayer):
-    def segment(self,req):
-        rospy.loginfo("\t* Filtering Scene with some generic stuff")
+class PassThroughSceneFilterLayer(SceneFilterLayer):
+    def filter(self,req):
+        rospy.loginfo("\t* FILTER LAYER: Using Passthrough filter")
 
         output = MolarSceneFilterResult()
         # populate this with the results of the seg
@@ -38,5 +39,5 @@ class GenericSceneFilterLayer(SceneFilterLayer):
 
 
 if __name__ == '__main__':
-    l = GenericSceneFilterLayer()
+    l = PassThroughSceneFilterLayer()
     #l.read_scene("what")

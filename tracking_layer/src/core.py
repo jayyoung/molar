@@ -26,22 +26,20 @@ class TrackingLayer:
     def track_cb(self,req):
         return self.track(req)
 
-class GenericTrackingLayer(TrackingLayer):
-    def segment(self,req):
-        rospy.loginfo("\t* Cohering episodes with naieve SIFT tracker")
-
-        output = MolarSceneFilterResult()
+class PassThroughTrackingLayer(TrackingLayer):
+    def track(self,req):
+        rospy.loginfo("\t* PASSTHROUGH TRACKING LAYER: Doing nothing")
+        rospy.loginfo("\t* Not even trying to cohere: "+str(len(req.input))+" scenes")
+        #output = MolarSceneFilterResult()
         # populate this with the results of the tracking
-
-
         rospy.loginfo("\t* Done!")
 
-        return MolarEpisodeCoherenceResponse(output)
+        return MolarEpisodeCoherenceResponse(req.input)
 
 
 
 if __name__ == '__main__':
-    l = GenericTrackingLayer()
+    l = PassThroughTrackingLayer()
     #r = l.segment_cb("butts")
     #print(r)
     #l = SensorLayer()

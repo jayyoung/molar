@@ -25,9 +25,9 @@ class SceneSegmentationLayer:
     def segment_cb(self,req):
         return self.segment(req)
 
-class GenericSceneSegmentationLayer(SceneSegmentationLayer):
+class PassThroughSceneSegmentationLayer(SceneSegmentationLayer):
     def segment(self,req):
-        rospy.loginfo("\t* Segmenting Scene with bog-standard PCL segmentation")
+        rospy.loginfo("\t* SEGMENTATION LAYER: Using passthrough segmentation")
 
         output = MolarSegmentResult()
         # populate this with the results of the seg
@@ -40,7 +40,7 @@ class GenericSceneSegmentationLayer(SceneSegmentationLayer):
 
 
 if __name__ == '__main__':
-    l = GenericSceneSegmentationLayer()
+    l = PassThroughSceneSegmentationLayer()
     #r = l.segment_cb("butts")
     #print(r)
     #l = SensorLayer()

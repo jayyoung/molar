@@ -9,6 +9,7 @@ import uuid
 from data_export import *
 from segment_layer.srv import *
 from sensor_layer.srv import *
+from processing_layer.srv import *  
 import json
 
 class SensorLayer:
@@ -43,7 +44,7 @@ class SensorLayer:
         # meta data: source of perception action, current waypoint, episode id
         self.backup_data(sensor_data)
         rospy.loginfo("* Data Backed Up")
-        rospy.loginfo("* Data Passed Through To Processing Layer")
+        rospy.loginfo("* Passing Data Through to Segmentation Layer")
         self.passthrough_data(sensor_data)
         rospy.loginfo("* Finished Processing Sensor Data")
         return MolarSensorInputResponse(True)
@@ -56,11 +57,13 @@ class SensorLayer:
         # send to segment layer
         rospy.loginfo("* Waiting for segmentation wrapper service")
         rospy.wait_for_service("/molar/segmentation",timeout=30)
-        rospy.loginfo("* Got it!")
+        rospy.loginfo("* Got it! Segmenting scene")
         segmentation_wrapper = rospy.ServiceProxy("/molar/segmentation",MolarSegmentScene)
         seg_response = segmentation_wrapper(sensor_data.cloud)
         # send response to processing layer
-        
+        processing_wrapper = rospy.ServiceProxy("/molar/process_scene",MolarProcessScene)
+        proc_response = processing_wrapper(seg_response.output)
+
 
 
 if __name__ == '__main__':

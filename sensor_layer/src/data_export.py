@@ -24,9 +24,9 @@ class LocalDiscDataExporter(DataExporter):
     def write_scene(self,sensor_data):
         # just picke it in the right directory
         meta_data = json.loads(sensor_data.meta_data)
-        episode_id = meta_data['episode_id']
+        #episode_id = meta_data['episode_id']
         scene_id = meta_data['scene_id']
-        target_dir = self.ROOT_DIR+episode_id+"/"
+        target_dir = self.ROOT_DIR+"scenes/"
         target_file = target_dir+scene_id+".p"
         if(os.path.exists(target_dir)):
             pass
