@@ -15,7 +15,7 @@ if __name__ == '__main__':
     rospy.loginfo("* Perception grabber server starting up")
 
     rospy.loginfo("pcd")
-    point_cloud = rospy.wait_for_message("/head_camera/depth/image",Image)
+    point_cloud = rospy.wait_for_message("/head_camera/depth_registered/points",PointCloud2)
     rospy.loginfo("rgb")
 
     rgb_img = rospy.wait_for_message("/head_camera/rgb/image",Image)
