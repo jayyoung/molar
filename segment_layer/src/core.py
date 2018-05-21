@@ -37,10 +37,31 @@ class PassThroughSceneSegmentationLayer(SceneSegmentationLayer):
 
         return MolarSegmentSceneResponse(output)
 
+class GraphCannySegmentationWrapper(SceneSegmentationLayer):
+    def segment(self,req):
+        rospy.loginfo("\t* SEGMENTATION LAYER: Using GRAPH CANNY segmentation")
+
+        output = MolarSegmentResult()
+
+        from canny_seg_wrapper.srv import CannySegWrapper
+
+        rospy.loginfo("waiting for service")
+        rospy.wait_for_service("/canny_seg_wrapper/segment")
+
+        rospy.loginfo("setting up proxy")
+        srv = rospy.ServiceProxy("/canny_seg_wrapper/segment",CannySegWrapper)
+
+        response = srv(req.rgb,req.depth)
+
+        output.segment_masks = response.output
+
+        rospy.loginfo("\t* Done!")
+        return MolarSegmentSceneResponse(output)
+
 
 
 if __name__ == '__main__':
-    l = PassThroughSceneSegmentationLayer()
+    l = GraphCannySegmentationWrapper()
     #r = l.segment_cb("butts")
     #print(r)
     #l = SensorLayer()

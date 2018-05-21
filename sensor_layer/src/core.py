@@ -9,7 +9,7 @@ import uuid
 from data_export import *
 from segment_layer.srv import *
 from sensor_layer.srv import *
-from processing_layer.srv import *  
+from processing_layer.srv import *
 import json
 
 class SensorLayer:
@@ -59,7 +59,7 @@ class SensorLayer:
         rospy.wait_for_service("/molar/segmentation",timeout=30)
         rospy.loginfo("* Got it! Segmenting scene")
         segmentation_wrapper = rospy.ServiceProxy("/molar/segmentation",MolarSegmentScene)
-        seg_response = segmentation_wrapper(sensor_data.cloud)
+        seg_response = segmentation_wrapper(sensor_data.cloud,sensor_data.rgb,sensor_data.depth)
         # send response to processing layer
         processing_wrapper = rospy.ServiceProxy("/molar/process_scene",MolarProcessScene)
         proc_response = processing_wrapper(seg_response.output)

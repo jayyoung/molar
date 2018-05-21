@@ -1,3 +1,5 @@
 sensor_msgs/PointCloud2 input     # the input point cloud
+sensor_msgs/Image rgb             # the input rgb image
+sensor_msgs/Image depth           # the input depth image
 ---
 MolarSegmentResult output        # any discovered segments

@@ -1,12 +1,13 @@
 <launch>
 
 
-	<param name="molar_point_cloud_topic" type="string" value="/head_xtion/depth_registered/points" />
-	<param name="molar_rgb_img_topic" type="string" value="/head_xtion/rgb/image_rect" />
-	<param name="molar_depth_img_topic" type="string" value="/head_xtion/depth/image" />
-	<param name="molar_camera_info_topic" type="string" value="/head_xtion/rgb/camera_info" />
-	<param name="molar_robot_pose_topic" type="string" value="/robot_pose" />
+	<param name="molar_point_cloud_topic" type="string" value="/head_camera/depth_registered/points" />
+	<param name="molar_rgb_img_topic" type="string" value="/head_camera/rgb/image_rect_color" />
+	<param name="molar_depth_img_topic" type="string" value="/head_camera/depth/image_rect" />
+	<param name="molar_camera_info_topic" type="string" value="/head_camera/rgb/camera_info" />
+	<param name="molar_robot_pose_topic" type="string" value="/amcl_pose" />
 	<param name="molar_tf_topic" type="string" value="/tf" />
+	<param name="molar_tf_cache_length" type="int" value="2" />
 
 
 	<node name="molar_tools" pkg="molar_tools" respawn="true" type="core.py"  output="screen"/>

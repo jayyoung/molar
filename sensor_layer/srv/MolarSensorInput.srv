@@ -4,7 +4,7 @@ sensor_msgs/PointCloud2 cloud
 sensor_msgs/Image rgb
 sensor_msgs/Image depth
 sensor_msgs/CameraInfo camera_info
-geometry_msgs/Pose robot_pose
+geometry_msgs/PoseWithCovarianceStamped robot_pose
 tf2_msgs/TFMessage tf
 ---
 bool result   #something?
