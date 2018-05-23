@@ -9,12 +9,13 @@ import uuid
 import json
 from filter_layer.srv import *
 from filter_layer.msg import *
+from recognition_layer.srv import *
 
 class SegmentRecognitionLayer:
     def __init__(self):
         rospy.init_node('molar_recognition_layer', anonymous = False)
         rospy.loginfo("* Segment Recognition Layer Starting Up")
-        self.service = rospy.Service('/molar/recognise_segments', MolarRecogniseScene, self.recognise_cb)
+        self.service = rospy.Service('/molar/recognise_segments', MolarRecogniseSceneSegments, self.recognise_cb)
 
         rospy.spin()
 
