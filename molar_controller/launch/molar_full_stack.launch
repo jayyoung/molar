@@ -18,6 +18,7 @@
 	<node name="molar_processing_layer" pkg="processing_layer" respawn="true" type="core.py"  output="screen"/>
 	<node name="molar_filter_layer" pkg="filter_layer" respawn="true" type="core.py"  output="screen"/>
 	<node name="molar_tracking_layer" pkg="tracking_layer" respawn="true" type="core.py"  output="screen"/>
+	<node name="molar_recognition_layer" pkg="recognition_layer" respawn="true" type="core.py"  output="screen"/>
 
 
 

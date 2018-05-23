@@ -41,7 +41,7 @@ class GraphCannySegmentationWrapper(SceneSegmentationLayer):
     def segment(self,req):
         rospy.loginfo("\t* SEGMENTATION LAYER: Using GRAPH CANNY segmentation")
 
-        output = MolarSegmentResult()
+
 
         from canny_seg_wrapper.srv import CannySegWrapper
 
@@ -50,6 +50,8 @@ class GraphCannySegmentationWrapper(SceneSegmentationLayer):
 
         rospy.loginfo("setting up proxy")
         srv = rospy.ServiceProxy("/canny_seg_wrapper/segment",CannySegWrapper)
+
+        output = MolarSegmentResult()
 
         response = srv(req.rgb,req.depth)
 

@@ -10,6 +10,7 @@ import json
 from processing_layer.srv import *
 from filter_layer.srv import *
 from tracking_layer.srv import *
+from recognition_layer.srv import *
 from std_srvs.srv import Trigger, TriggerResponse
 
 class ProcessingLayer:
@@ -28,8 +29,6 @@ class ProcessingLayer:
         self.cur_episode_id = str(uuid.uuid4())
         return TriggerResponse(True,"MOLAR: Beginning new episode with ID: "+self.cur_episode_id)
 
-
-
     def process_scene_cb(self,req):
         return MolarProcessSceneResponse(self.process_scene(req.input))
 
@@ -38,13 +37,19 @@ class ProcessingLayer:
         #   input: a segmented scene
         #   send to filter layer
         rospy.loginfo("\t* Passing to filter layer")
-        filter_service = rospy.ServiceProxy("/molar/filter_scene",MolarFilterScene)
-        filter_response = filter_service(scene) # send a segmentresult to the filter, get a filtered result back
-        rospy.loginfo("response from filter layer:")
-        rospy.loginfo(filter_response)
-        self.cur_episode_scenes.append(filter_response.output)
-        #   do more stuff?
 
+        recog_service = rospy.ServiceProxy("/molar/recognise_segments",MolarRecogniseSceneSegments)
+        filter_service = rospy.ServiceProxy("/molar/filter_scene",MolarFilterScene)
+
+
+
+        filter_response = filter_service(scene) # send a segmentresult to the filter, get a filtered result back
+
+        rospy.loginfo("Filter layer done")
+        #rospy.loginfo(filter_response)
+        self.cur_episode_scenes.append(filter_response.output)
+
+        recog_response = recog_service(filter_response.output)
 
 
     def end_episode(self,trigger):

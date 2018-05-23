@@ -31,7 +31,7 @@ class PassThroughSceneFilterLayer(SceneFilterLayer):
 
         output = MolarSceneFilterResult()
         # populate this with the results of the seg
-
+        output.segment_masks = req.input.segment_masks
 
         rospy.loginfo("\t* Done!")
 
