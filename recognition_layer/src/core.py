@@ -33,7 +33,8 @@ class MovidiusSegmentRecognitionLayer(SegmentRecognitionLayer):
         output = []
 
         for k in req.input.segment_masks:
-            output.append("butts")
+            output.append("test label")
+        
 
         rospy.loginfo("\t* Done!")
 

@@ -2,12 +2,16 @@
 
 import roslib
 import rospy
-import sensor_msgs
+from sensor_msgs.msg import Image
 import geometry_msgs
 import tf
 import uuid
 from segment_layer.srv import *
 from segment_layer.msg import *
+import cv2
+from cv_bridge import CvBridge, CvBridgeError
+import numpy as np
+import random
 
 class SceneSegmentationLayer:
     def __init__(self):
@@ -15,6 +19,11 @@ class SceneSegmentationLayer:
         rospy.loginfo("* Segmentation Layer Starting Up")
         self.service = rospy.Service('/molar/segmentation', MolarSegmentScene, self.segment_cb)
         rospy.loginfo("* Segmentation Layer Ready")
+
+        self.blob_segment_pub = rospy.Publisher('/molar/segmentation/blob_cluster_image', Image, queue_size=10, latch=True)
+        self.rgb_segment_pub = rospy.Publisher('/molar/segmentation/rgb_cluster_image', Image, queue_size=10, latch=True)
+
+        #self.segment_pub.publish(std_msgs.msg.String("foo"))
 
         rospy.spin()
 
@@ -56,6 +65,29 @@ class GraphCannySegmentationWrapper(SceneSegmentationLayer):
         response = srv(req.rgb,req.depth)
 
         output.segment_masks = response.output
+
+        bridge = CvBridge()
+
+        cv_col_ims = []
+        cv_rgb_ims = []
+        for k in output.segment_masks:
+            i = bridge.imgmsg_to_cv2(k,desired_encoding="bgr8")
+            cv_rgb_ims.append(i.copy())
+            g_img = cv2.cvtColor( i, cv2.COLOR_RGB2GRAY )
+            ret,thresh_img = cv2.threshold(g_img,127,255,cv2.THRESH_BINARY)
+            thresh_img = cv2.cvtColor(thresh_img, cv2.COLOR_GRAY2RGB )
+            col = [random.randint(0,255),random.randint(0,255),random.randint(0,255)]
+            mask_idxs = np.where(thresh_img != 0)
+            thresh_img[mask_idxs[0], mask_idxs[1], :] = col
+            cv_col_ims.append(thresh_img)
+
+        bs = sum(cv_col_ims)
+        rs = sum(cv_rgb_ims)
+        cv2.imwrite("segments_blob.png",bs)
+        cv2.imwrite("segments_rgb.png",rs)
+
+        self.rgb_segment_pub.publish(bridge.cv2_to_imgmsg(rs,"bgr8"))
+        self.blob_segment_pub.publish(bridge.cv2_to_imgmsg(bs,"bgr8"))
 
         rospy.loginfo("\t* Done!")
         return MolarSegmentSceneResponse(output)

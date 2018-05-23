@@ -41,8 +41,6 @@ class ProcessingLayer:
         recog_service = rospy.ServiceProxy("/molar/recognise_segments",MolarRecogniseSceneSegments)
         filter_service = rospy.ServiceProxy("/molar/filter_scene",MolarFilterScene)
 
-
-
         filter_response = filter_service(scene) # send a segmentresult to the filter, get a filtered result back
 
         rospy.loginfo("Filter layer done")
@@ -50,6 +48,11 @@ class ProcessingLayer:
         self.cur_episode_scenes.append(filter_response.output)
 
         recog_response = recog_service(filter_response.output)
+
+        rospy.loginfo("recognition response is: ")
+
+        for k in recog_response.labels:
+            rospy.loginfo(k)
 
 
     def end_episode(self,trigger):
